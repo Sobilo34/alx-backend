@@ -5,6 +5,7 @@ BaseCaching and is a caching system
 """
 from base_caching import BaseCaching
 
+
 class BasicCache(BaseCaching):
     """A class for caching system"""
     def __init__(self):
