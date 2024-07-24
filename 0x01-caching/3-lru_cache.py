@@ -23,7 +23,6 @@ class LRUCache(BaseCaching):
             return
 
         if key in self.cache_data:
-            # If the key is already in the cache, remove it from its current position in recent
             self.recent.remove(key)
         elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
             # If the cache is at maximum capacity, remove the LRU item
