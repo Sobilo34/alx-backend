@@ -31,9 +31,14 @@ class LFUCache(BaseCaching):
                 # Find the least frequently used key
                 lfu_key = min(self.lfu_count, key=self.lfu_count.get)
                 # If multiple keys have the same frequency, use the LRU policy
-                lfu_keys = [k for k, v in self.lfu_count.items() if v == self.lfu_count[lfu_key]]
+                lfu_keys = [
+                    k for k, v in self.lfu_count.items()
+                    if v == self.lfu_count[lfu_key]
+                ]
                 if len(lfu_keys) > 1:
-                    lfu_key = min(lfu_keys, key=lambda k: self.usage_order.index(k))
+                    lfu_key = min(
+                        lfu_keys, key=lambda k: self.usage_order.index(k)
+                    )
                 del self.cache_data[lfu_key]
                 del self.lfu_count[lfu_key]
                 self.usage_order.remove(lfu_key)
