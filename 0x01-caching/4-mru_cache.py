@@ -8,16 +8,15 @@ from base_caching import BaseCaching
 
 class MRUCache(BaseCaching):
     """
-    A class for mru caching system
+    A class for MRU caching system
     """
     def __init__(self):
         super().__init__()
-        self.cache_data = {}  # Stores the actual key-item pairs
         self.recent = []  # Keeps track of the usage order of keys
 
     def put(self, key, item):
         """
-        A function that assigns key to item and handles mru eviction
+        A function that assigns key to item and handles MRU eviction
         """
         if key is None or item is None:
             return
@@ -25,9 +24,9 @@ class MRUCache(BaseCaching):
         if key in self.cache_data:
             self.recent.remove(key)
         elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # If the cache is at maximum capacity, remove the mru item
-            mru_key = self.recent.pop(-2)  # Remove the most recently used key
-            del self.cache_data[mru_key]  # Remove the mru key from the cache
+            # If the cache is at maximum capacity, remove the MRU item
+            mru_key = self.recent.pop(-1)  # Remove the most recently used key
+            del self.cache_data[mru_key]  # Remove the MRU key from the cache
             print("DISCARD: " + mru_key)
 
         # Add the new key to the end of recent list and cache_data
