@@ -1,14 +1,15 @@
+from base_caching import BaseCaching
+
 #!/usr/bin/env python3
 """
 A class LFUCache that inherits from
 BaseCaching and is a caching system
 """
-from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
     """
-    A class for MRU caching system
+    A class for LFU caching system
     """
     def __init__(self):
         super().__init__()
@@ -27,7 +28,10 @@ class LFUCache(BaseCaching):
             self.lfu_count[key] += 1
         else:
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                lfu_key = self.lfu.pop(0)
+                min_count = min(self.lfu_count.values())
+                lfu_keys = [k for k, v in self.lfu_count.items() if v == min_count]
+                lfu_key = min(self.lfu, key=lambda x: self.lfu.index(x) if x in self.lfu else float('inf'))
+                self.lfu.remove(lfu_key)
                 del self.cache_data[lfu_key]
                 del self.lfu_count[lfu_key]
                 print("DISCARD: " + lfu_key)
