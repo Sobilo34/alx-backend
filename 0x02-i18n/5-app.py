@@ -45,6 +45,7 @@ def get_user() -> Optional[Dict[str, str]]:
         return None
     return users.get(user_id)
 
+
 @app.before_request
 def before_request() -> None:
     """
