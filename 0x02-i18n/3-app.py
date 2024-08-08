@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """A Flask app configured with Flask-Babel for i18n support."""
 from flask import Flask, render_template, request
-from flask_babel import Babel, _
+from flask_babel import Babel
 
 
 class Config:
