@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
-"""A Flask app configured with Flask-Babel for i18n support."""
-from flask import Flask, render_template, request
-from flask_babel import Babel
+"""
+A Flask application configured with Flask-Babel for i18n support.
+Includes a mock user login system.
+"""
+
+from flask import Flask, render_template, request, g
+from flask_babel import Babel, _
+from typing import Optional, Dict
 
 
 class Config:
-    """A config class"""
+    """
+    Configuration class for the Flask app.
+    """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
+
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -18,16 +26,18 @@ users = {
 }
 
 
-app = Flask(__name__)
+app: Flask = Flask(__name__)
 app.config.from_object(Config)
-babel = Babel(app)
+
+babel: Babel = Babel(app)
 
 
 @babel.localeselector
 def get_locale() -> str:
     """
-    Find best language match
+    Select the best match for supported languages based on user preferences.s.
     """
+    # Check locale from URL parameters
     locale = request.args.get('locale')
     if locale in app.config['LANGUAGES']:
         return locale
@@ -41,8 +51,8 @@ def get_locale() -> str:
 
 
 def get_user() -> Optional[Dict[str, str]]:
-    """function that returns a user dictionary or None if the
-    ID cannot be found or if login_as was not passed
+    """
+    Get user information based on the login_as parameter..
     """
     try:
         user_id = int(request.args.get('login_as'))
@@ -62,10 +72,10 @@ def before_request() -> None:
 @app.route('/')
 def index() -> str:
     """
-    The index function that render 0-app.py
+    Route that renders the index page.
     """
-    return render_template('4-index.html')
+    return render_template('5-index.html')
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(debug=True)
