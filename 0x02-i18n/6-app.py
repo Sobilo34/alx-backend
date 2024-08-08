@@ -40,6 +40,25 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
+def get_user() -> Optional[Dict[str, str]]:
+    """function that returns a user dictionary or None if the
+    ID cannot be found or if login_as was not passed
+    """
+    try:
+        user_id = int(request.args.get('login_as'))
+    except (TypeError, ValueError):
+        return None
+    return users.get(user_id)
+
+
+@app.before_request
+def before_request() -> None:
+    """
+    Executed before each request to find the logged-in user.
+    """
+    g.user = get_user()
+
+
 @app.route('/')
 def index() -> str:
     """
